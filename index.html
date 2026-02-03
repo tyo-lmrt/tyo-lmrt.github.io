@@ -6,10 +6,10 @@
     <title>LMRT | Coming Soon</title>
     <style>
         :root {
-            --bg-color: #0a0a0a;
-            --main-color: #ffffff;
-            --glitch-color-1: #ff00c1;
-            --glitch-color-2: #00fff9;
+            --bg-color: #050505;
+            --text-color: #ffffff;
+            --glitch-1: #00f0ff;
+            --glitch-2: #ff003c;
         }
 
         body, html {
@@ -21,25 +21,44 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Courier New', Courier, monospace; /* 使用等宽字体增加像素锯齿感 */
             overflow: hidden;
+        }
+
+        /* 扫描线背景效果 */
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 10;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
         }
 
         .container {
             text-align: center;
+            position: relative;
         }
 
-        /* Glitch Effect Core */
+        .glitch-wrapper {
+            padding: 20px;
+        }
+
         .glitch {
             position: relative;
-            font-size: 5rem;
-            font-weight: 900;
+            font-size: 6rem;
+            font-weight: bold;
             text-transform: uppercase;
-            color: var(--main-color);
-            letter-spacing: 0.5rem;
-            animation: glitch-skew 1s infinite linear alternate-reverse;
+            color: var(--text-color);
+            letter-spacing: 0.8rem;
+            /* 基础锯齿抖动 */
+            animation: main-glitch 3s infinite;
         }
 
+        /* 核心锯齿层 */
         .glitch::before,
         .glitch::after {
             content: attr(data-text);
@@ -49,52 +68,56 @@
             width: 100%;
             height: 100%;
             background: var(--bg-color);
+            opacity: 0.8;
         }
 
+        /* 蓝色偏移层 */
         .glitch::before {
-            left: 2px;
-            text-shadow: -2px 0 var(--glitch-color-1);
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim 5s infinite linear alternate-reverse;
+            left: 3px;
+            text-shadow: -3px 0 var(--glitch-1);
+            animation: glitch-anim-1 2s infinite linear alternate-reverse;
         }
 
+        /* 红色偏移层 */
         .glitch::after {
-            left: -2px;
-            text-shadow: -2px 0 var(--glitch-color-2);
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim2 5s infinite linear alternate-reverse;
+            left: -3px;
+            text-shadow: 3px 0 var(--glitch-2);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
         }
 
-        /* Subtitle */
         .subtitle {
-            margin-top: 10px;
-            color: #666;
-            font-size: 0.9rem;
-            letter-spacing: 0.3rem;
+            margin-top: 20px;
+            color: #444;
+            font-size: 1rem;
+            letter-spacing: 0.5rem;
             text-transform: uppercase;
+            font-weight: 300;
         }
 
-        /* Animations */
-        @keyframes glitch-anim {
-            0% { clip: rect(31px, 9999px, 94px, 0); }
-            5% { clip: rect(70px, 9999px, 71px, 0); }
-            10% { clip: rect(29px, 9999px, 83px, 0); }
-            15% { clip: rect(16px, 9999px, 91px, 0); }
-            20% { clip: rect(2px, 9999px, 23px, 0); }
-            /* ... 更多关键帧让效果更随机 ... */
-            100% { clip: rect(67px, 9999px, 62px, 0); }
+        /* 强力锯齿抖动关键帧 */
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 30% 0); transform: translate(-5px, -2px); }
+            10% { clip-path: inset(60% 0 10% 0); transform: translate(5px, 2px); }
+            20% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, 5px); }
+            30% { clip-path: inset(40% 0 40% 0); transform: translate(2px, -5px); }
+            40% { clip-path: inset(80% 0 5% 0); transform: translate(-5px, 2px); }
+            50% { clip-path: inset(5% 0 80% 0); transform: translate(5px, -2px); }
+            100% { clip-path: inset(20% 0 30% 0); transform: translate(-5px, -2px); }
         }
 
-        @keyframes glitch-anim2 {
-            0% { clip: rect(65px, 9999px, 100px, 0); }
-            100% { clip: rect(10px, 9999px, 30px, 0); }
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(15% 0 45% 0); transform: translate(5px, 2px); }
+            25% { clip-path: inset(50% 0 15% 0); transform: translate(-5px, -2px); }
+            50% { clip-path: inset(10% 0 60% 0); transform: translate(2px, 5px); }
+            75% { clip-path: inset(70% 0 5% 0); transform: translate(-2px, -5px); }
+            100% { clip-path: inset(15% 0 45% 0); transform: translate(5px, 2px); }
         }
 
-        @keyframes glitch-skew {
+        @keyframes main-glitch {
             0% { transform: skew(0deg); }
-            20% { transform: skew(3deg); }
-            40% { transform: skew(-3deg); }
-            60% { transform: skew(1deg); }
+            2% { transform: skew(3deg); }
+            4% { transform: skew(-3deg); }
+            6% { transform: skew(0deg); }
             100% { transform: skew(0deg); }
         }
     </style>
@@ -102,7 +125,9 @@
 <body>
 
     <div class="container">
-        <div class="glitch" data-text="COMING SOON">COMING SOON</div>
+        <div class="glitch-wrapper">
+            <div class="glitch" data-text="COMING SOON">COMING SOON</div>
+        </div>
         <div class="subtitle">EST. TOKYO - LMRT</div>
     </div>
 
