@@ -10,11 +10,10 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: '#050505';
+            background-color: #050505;
             overflow: hidden;
         }
 
-        /* Loading screen */
         #loading {
             position: fixed;
             top: 0;
@@ -41,7 +40,6 @@
             pointer-events: none;
         }
 
-        /* Background image */
         #bg-image {
             position: fixed;
             top: 0;
@@ -51,51 +49,6 @@
             object-fit: cover;
             object-position: center top;
             z-index: 0;
-        }
-
-        /* Scanline overlay */
-        body::before {
-            content: " ";
-            display: block;
-            position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-
-            z-index: 10;
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
-        }
-
-        .container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            z-index: 5;
-        }
-
-        @media (max-width: 768px) {
-            .glitch {
-                font-size: 2.5rem;
-                letter-spacing: 0.4rem;
-            }
-            .subtitle {
-                letter-spacing: 0.3rem !important;
-                font-size: 0.8rem !important;
-            }
-        }
-
-        .subtitle {
-            margin-top: 20px;
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 1rem;
-            letter-spacing: 0.5rem;
-            text-transform: uppercase;
-            font-weight: 300;
         }
     </style>
 </head>
@@ -107,19 +60,34 @@
 
     <script>
         (function () {
-            var isMobile = window.innerWidth <= 768;
             var pcImages = [1, 2, 4, 5, 6, 7];
             var allImages = [1, 2, 3, 4, 5, 6, 7];
-            var pool = isMobile ? allImages : pcImages;
-            var pick = pool[Math.floor(Math.random() * pool.length)];
-            var src = 'img/' + pick + '.jpg';
+            var currentSrc = '';
 
-            var img = new Image();
-            img.onload = function () {
-                document.getElementById('bg-image').src = src;
-                document.getElementById('loading').classList.add('hidden');
-            };
-            img.src = src;
+            function loadImage() {
+                var isMobile = window.innerWidth <= 768;
+                var pool = isMobile ? allImages : pcImages;
+                var pick = pool[Math.floor(Math.random() * pool.length)];
+                var src = 'img/' + pick + '.jpg';
+
+                if (src === currentSrc) return;
+                currentSrc = src;
+
+                var loading = document.getElementById('loading');
+                loading.classList.remove('hidden');
+
+                var img = new Image();
+                img.onload = function () {
+                    document.getElementById('bg-image').src = src;
+                    loading.classList.add('hidden');
+                };
+                img.src = src;
+            }
+
+            loadImage();
+            window.addEventListener('orientationchange', function () {
+                setTimeout(loadImage, 100);
+            });
         })();
     </script>
 
