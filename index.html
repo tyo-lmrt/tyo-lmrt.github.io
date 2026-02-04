@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>LMRT | Coming Soon</title>
     <style>
         body, html {
@@ -44,6 +44,18 @@
             touch-action: none;
         }
 
+        #bg-blur {
+            position: fixed;
+            top: -20px;
+            left: -20px;
+            width: calc(100% + 40px);
+            height: calc(100% + 40px);
+            object-fit: cover;
+            object-position: center center;
+            filter: blur(20px) brightness(0.6);
+            z-index: 0;
+        }
+
         #bg-image {
             position: fixed;
             top: 0;
@@ -52,7 +64,7 @@
             height: 100%;
             object-fit: cover;
             object-position: center top;
-            z-index: 0;
+            z-index: 1;
         }
     </style>
 </head>
@@ -60,6 +72,7 @@
 
     <div id="loading"><span>loading...</span></div>
 
+    <img id="bg-blur" alt="">
     <img id="bg-image" alt="">
 
     <script>
@@ -79,6 +92,7 @@
 
                 var img = new Image();
                 img.onload = function () {
+                    document.getElementById('bg-blur').src = src;
                     document.getElementById('bg-image').src = src;
                     loading.classList.add('hidden');
                 };
@@ -88,10 +102,12 @@
             loadImage();
             window.addEventListener('orientationchange', function () {
                 setTimeout(function () {
-                    var bg = document.getElementById('bg-image');
-                    bg.style.display = 'none';
-                    bg.offsetHeight;
-                    bg.style.display = '';
+                    var els = [document.getElementById('bg-blur'), document.getElementById('bg-image')];
+                    els.forEach(function (el) {
+                        el.style.display = 'none';
+                        el.offsetHeight;
+                        el.style.display = '';
+                    });
                 }, 100);
             });
         })();
