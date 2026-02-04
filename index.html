@@ -60,14 +60,11 @@
 
     <script>
         (function () {
-            var pcImages = [1, 2, 4, 5, 6, 7];
-            var allImages = [1, 2, 3, 4, 5, 6, 7];
+            var images = [1, 2, 3, 4, 5, 6];
             var currentSrc = '';
 
             function loadImage() {
-                var isMobile = window.innerWidth <= 768;
-                var pool = isMobile ? allImages : pcImages;
-                var pick = pool[Math.floor(Math.random() * pool.length)];
+                var pick = images[Math.floor(Math.random() * images.length)];
                 var src = 'img/' + pick + '.jpg';
 
                 if (src === currentSrc) return;
