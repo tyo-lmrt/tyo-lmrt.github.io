@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LMRT | Coming Soon</title>
     <style>
         body, html {
@@ -38,6 +38,10 @@
         #loading.hidden {
             opacity: 0;
             pointer-events: none;
+        }
+
+        body {
+            touch-action: none;
         }
 
         #bg-image {
@@ -83,7 +87,12 @@
 
             loadImage();
             window.addEventListener('orientationchange', function () {
-                setTimeout(loadImage, 100);
+                setTimeout(function () {
+                    var bg = document.getElementById('bg-image');
+                    bg.style.display = 'none';
+                    bg.offsetHeight;
+                    bg.style.display = '';
+                }, 100);
             });
         })();
     </script>
