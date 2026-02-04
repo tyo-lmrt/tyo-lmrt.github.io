@@ -44,7 +44,7 @@
             touch-action: none;
         }
 
-        #bg-image {
+        .bg-layer {
             position: fixed;
             top: 0;
             left: 0;
@@ -52,7 +52,12 @@
             height: 100%;
             object-fit: cover;
             object-position: center top;
-            z-index: 0;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .bg-layer.active {
+            opacity: 1;
         }
     </style>
 </head>
@@ -60,27 +65,49 @@
 
     <div id="loading"><span>loading...</span></div>
 
-    <img id="bg-image" alt="">
+    <img id="bg-a" class="bg-layer" alt="">
+    <img id="bg-b" class="bg-layer" alt="">
 
     <script>
         (function () {
             var images = [1, 2, 3, 4, 5, 6];
-            var currentSrc = '';
+            var currentPick = -1;
+            var bottom = document.getElementById('bg-a');
+            var top = document.getElementById('bg-b');
+            var isFirst = true;
+
+            bottom.style.zIndex = 0;
+            top.style.zIndex = 1;
+
+            function pickNext() {
+                var pool = images.filter(function (n) { return n !== currentPick; });
+                return pool[Math.floor(Math.random() * pool.length)];
+            }
 
             function loadImage() {
-                var pick = images[Math.floor(Math.random() * images.length)];
-                var src = 'img/' + pick + '.jpg';
-
-                if (src === currentSrc) return;
-                currentSrc = src;
-
-                var loading = document.getElementById('loading');
-                loading.classList.remove('hidden');
+                currentPick = pickNext();
+                var src = 'img/' + currentPick + '.jpg';
 
                 var img = new Image();
                 img.onload = function () {
-                    document.getElementById('bg-image').src = src;
-                    loading.classList.add('hidden');
+                    if (isFirst) {
+                        bottom.src = src;
+                        bottom.classList.add('active');
+                        document.getElementById('loading').classList.add('hidden');
+                        isFirst = false;
+                        setTimeout(loadImage, 5000);
+                    } else {
+                        top.src = src;
+                        top.classList.add('active');
+                        setTimeout(function () {
+                            bottom.src = src;
+                            top.style.transition = 'none';
+                            top.classList.remove('active');
+                            top.offsetHeight;
+                            top.style.transition = '';
+                            setTimeout(loadImage, 5000);
+                        }, 1000);
+                    }
                 };
                 img.src = src;
             }
@@ -88,10 +115,11 @@
             loadImage();
             window.addEventListener('orientationchange', function () {
                 setTimeout(function () {
-                    var bg = document.getElementById('bg-image');
-                    bg.style.display = 'none';
-                    bg.offsetHeight;
-                    bg.style.display = '';
+                    [bottom, top].forEach(function (el) {
+                        el.style.display = 'none';
+                        el.offsetHeight;
+                        el.style.display = '';
+                    });
                 }, 100);
             });
         })();
