@@ -5,131 +5,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LMRT | Coming Soon</title>
     <style>
-        :root {
-            --bg-color: #050505;
-            --text-color: #ffffff;
-            --glitch-1: #00f0ff;
-            --glitch-2: #ff003c;
-        }
-
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--bg-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Courier New', Courier, monospace; /* 使用等宽字体增加像素锯齿感 */
+            background-color: '#050505';
             overflow: hidden;
         }
 
-        /* 扫描线背景效果 */
+        /* Loading screen */
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            transition: opacity 0.4s ease;
+        }
+
+        #loading span {
+            color: #000000;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.2rem;
+            letter-spacing: 0.3rem;
+        }
+
+        #loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Background image */
+        #bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            z-index: 0;
+        }
+
+        /* Scanline overlay */
         body::before {
             content: " ";
             display: block;
-            position: absolute;
+            position: fixed;
             top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+
             z-index: 10;
             background-size: 100% 2px, 3px 100%;
             pointer-events: none;
         }
 
         .container {
-            text-align: center;
-            position: relative;
-        }
-
-        .glitch-wrapper {
-            padding: 20px;
-        }
-
-        .glitch {
-            position: relative;
-            font-size: 6rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            color: var(--text-color);
-            letter-spacing: 0.8rem;
-            /* 基础锯齿抖动 */
-            animation: main-glitch 3s infinite;
-        }
-
-        /* 核心锯齿层 */
-        .glitch::before,
-        .glitch::after {
-            content: attr(data-text);
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--bg-color);
-            opacity: 0.8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 5;
         }
 
-        /* 蓝色偏移层 */
-        .glitch::before {
-            left: 3px;
-            text-shadow: -3px 0 var(--glitch-1);
-            animation: glitch-anim-1 2s infinite linear alternate-reverse;
-        }
-
-        /* 红色偏移层 */
-        .glitch::after {
-            left: -3px;
-            text-shadow: 3px 0 var(--glitch-2);
-            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        @media (max-width: 768px) {
+            .glitch {
+                font-size: 2.5rem;
+                letter-spacing: 0.4rem;
+            }
+            .subtitle {
+                letter-spacing: 0.3rem !important;
+                font-size: 0.8rem !important;
+            }
         }
 
         .subtitle {
             margin-top: 20px;
-            color: #444;
+            color: rgba(255, 255, 255, 0.4);
             font-size: 1rem;
             letter-spacing: 0.5rem;
             text-transform: uppercase;
             font-weight: 300;
         }
-
-        /* 强力锯齿抖动关键帧 */
-        @keyframes glitch-anim-1 {
-            0% { clip-path: inset(20% 0 30% 0); transform: translate(-5px, -2px); }
-            10% { clip-path: inset(60% 0 10% 0); transform: translate(5px, 2px); }
-            20% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, 5px); }
-            30% { clip-path: inset(40% 0 40% 0); transform: translate(2px, -5px); }
-            40% { clip-path: inset(80% 0 5% 0); transform: translate(-5px, 2px); }
-            50% { clip-path: inset(5% 0 80% 0); transform: translate(5px, -2px); }
-            100% { clip-path: inset(20% 0 30% 0); transform: translate(-5px, -2px); }
-        }
-
-        @keyframes glitch-anim-2 {
-            0% { clip-path: inset(15% 0 45% 0); transform: translate(5px, 2px); }
-            25% { clip-path: inset(50% 0 15% 0); transform: translate(-5px, -2px); }
-            50% { clip-path: inset(10% 0 60% 0); transform: translate(2px, 5px); }
-            75% { clip-path: inset(70% 0 5% 0); transform: translate(-2px, -5px); }
-            100% { clip-path: inset(15% 0 45% 0); transform: translate(5px, 2px); }
-        }
-
-        @keyframes main-glitch {
-            0% { transform: skew(0deg); }
-            2% { transform: skew(3deg); }
-            4% { transform: skew(-3deg); }
-            6% { transform: skew(0deg); }
-            100% { transform: skew(0deg); }
-        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="glitch-wrapper">
-            <div class="glitch" data-text="COMING SOON">COMING SOON</div>
-        </div>
-        <div class="subtitle">LM.RT</div>
-    </div>
+    <div id="loading"><span>loading...</span></div>
+
+    <img id="bg-image" alt="">
+
+    <script>
+        (function () {
+            var isMobile = window.innerWidth <= 768;
+            var pcImages = [1, 2, 4, 5, 6, 7];
+            var allImages = [1, 2, 3, 4, 5, 6, 7];
+            var pool = isMobile ? allImages : pcImages;
+            var pick = pool[Math.floor(Math.random() * pool.length)];
+            var src = 'img/' + pick + '.jpg';
+
+            var img = new Image();
+            img.onload = function () {
+                document.getElementById('bg-image').src = src;
+                document.getElementById('loading').classList.add('hidden');
+            };
+            img.src = src;
+        })();
+    </script>
 
 </body>
 </html>
