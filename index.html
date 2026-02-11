@@ -59,11 +59,38 @@
         .bg-layer.active {
             opacity: 1;
         }
+
+        #header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 10;
+            padding: 10px 16px;
+            box-sizing: border-box;
+        }
+
+        #header p {
+            margin: 0;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
 
     <div id="loading"><span>loading...</span></div>
+
+    <div id="header">
+        <p>AW26 Pockets of Light</p>
+        <p>Debut in Tokyo. </p>
+        <p>Pop-Up Showroom</p>
+        <p>Feb 12-13, 2026</p>
+        <p>Nishiazabu 2-8-8, Minato-ku, 106-0031, Tokyo</p>
+    </div>
 
     <img id="bg-a" class="bg-layer" alt="">
     <img id="bg-b" class="bg-layer" alt="">
