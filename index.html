@@ -78,6 +78,67 @@
             font-size: 12px;
             line-height: 1.4;
         }
+
+        #center-logo {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        #center-logo img {
+            width: 400px;
+            height: auto;
+        }
+
+        #center-logo .tagline {
+            color: #ffffff;
+            font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            letter-spacing: 0.15em;
+            margin-top: 60px;
+            text-align: center;
+            line-height: 1.0;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+            width: 400px;
+        }
+
+        #center-logo .tagline .line1 {
+            display: block;
+            width: 400px;
+            text-align: justify;
+            text-align-last: justify;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        #center-logo .tagline .line2 {
+            font-size: 20px;
+        }
+
+        @media (max-width: 480px) {
+            #center-logo img {
+                width: 260px;
+            }
+
+            #center-logo .tagline {
+                width: 260px;
+                margin-top: 40px;
+            }
+
+            #center-logo .tagline .line1 {
+                width: 260px;
+                font-size: 17px;
+            }
+
+            #center-logo .tagline .line2 {
+                font-size: 13px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -87,6 +148,14 @@
     <!-- <div id="header">
         <p>For the tips</p>
     </div> -->
+
+    <div id="center-logo">
+        <img src="img/LOGO.svg" alt="LMRT Logo">
+        <div class="tagline">
+            <span class="line1">AW26 | Pockets of Light</span><br>
+            <span class="line2">Arriving in July</span>
+        </div>
+    </div>
 
     <img id="bg-a" class="bg-layer" alt="">
     <img id="bg-b" class="bg-layer" alt="">
